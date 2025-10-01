@@ -1,17 +1,13 @@
-import Card from "react-bootstrap/Card";
 import AddTask from "./AddTask";
 import Header from "./Header";
 import TabsComponent from "./Tabs";
-
 const CardComponent = () => {
   return (
-    <div className="grid grid-rows-[150px_1fr] h-screen justify-items-center xs:p-2 md:p-12 lg:p-24">
+    <div className="grid grid-cols-1 grid-rows-12 h-[95vh] w-[90vw] relative">
       <Header />
-      <main className="flex w-full max-w-7xl overflow-auto flex-col">
-        <Card className="w-full max-w-7xl h-full min-h-full border !border-[#212529] !border-t-0 !rounded-lg !rounded-t-none shadow-sm xs:p-2 sm:p-8 md:p-12 lg:p-24">
-          <AddTask />
-          <TabsComponent />
-        </Card>
+      <main className="row-span-12 h-full bg-gray-100 p-4 border border-t-0 rounded-lg rounded-t-none flex flex-col">
+        <AddTask />
+        <TabsComponent />
       </main>
     </div>
   );

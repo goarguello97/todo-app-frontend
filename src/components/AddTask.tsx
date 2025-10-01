@@ -1,22 +1,20 @@
-import { Form } from "react-bootstrap";
-
 const AddTask = () => {
   return (
-    <div className="space-y-2">
-      <Form className="flex items-center gap-2">
-        <Form.Control
-          className="flex-grow h-12"
+    <div className="w-full xs:!px-2 sm:!px-8 md:!px-12">
+      <form className="flex items-center gap-2">
+        <input
+          className="flex-grow text-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#212529] !px-3 !py-2"
           type="text"
           placeholder="Ingresa tu tarea aquí..."
         />
 
         <button
           type="submit"
-          className="h-12 w-[200px] rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border-1 border-[#6C757D] hover:border-[#FFFFFF]"
+          className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2"
         >
           Añadir Tarea
         </button>
-      </Form>
+      </form>
     </div>
   );
 };
