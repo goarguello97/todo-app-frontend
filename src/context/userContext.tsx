@@ -85,19 +85,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (values: any) => {
+    const { password2, ...data } = values;
     try {
-      const userNew = await axiosConfig.post("/users", values);
-      if (userNew.status === 201) {
+      const response = await axiosConfig.post("/users", data);
+      if (data.status === 201) {
         setSuccessRegister({
-          message:
-            "Usuario creado, deberá ser habilitado por un Administrador para acceder.  \n Será redirigido al inicio.",
+          message: response.data.message,
         });
         setTimeout(() => {
           navigate("/");
         }, 5000);
       }
     } catch (error: any) {
-      setError({ message: error.data.errors[0].msg });
+      setError({ message: error.response.data.errors[0].message });
     }
   };
 
