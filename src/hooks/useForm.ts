@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 
-const useForm = (initialValues: any, submit: any, validations: any) => {
+const useForm = (
+  initialValues: any,
+  submit: (values: any) => {},
+  validations: any
+) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0) {
-      submit(values);
-    }
+    if (submitting) {
+      if (Object.keys(errors).length === 0) {
+        submit(values);
+      }
+      setSubmitting(false);
 
-    setTimeout(() => {
-      setErrors({});
-    }, 3000);
+      setTimeout(() => {
+        setErrors({});
+      }, 3000);
+    }
   }, [errors]);
 
   const handleChange = (e: any) => {
@@ -28,6 +36,7 @@ const useForm = (initialValues: any, submit: any, validations: any) => {
     } else {
       setErrors({});
     }
+    setSubmitting(true);
   };
 
   return {

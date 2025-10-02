@@ -2,7 +2,18 @@ import { createContext, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../config/axiosConfig";
 
-export const UserContext = createContext({});
+type LoginValues = { email: string; password: string }; // tipa los valores de login
+
+type UserContextType = {
+  login: (values: LoginValues) => Promise<void>;
+  logout: () => void;
+  getAuth: () => Promise<void>;
+  register: (values: any) => Promise<void>;
+};
+
+export const UserContext = createContext<UserContextType>(
+  {} as UserContextType
+);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
@@ -17,13 +28,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     try {
       setLoading(true);
 
-      const { data } = await axiosConfig.post("/login", values);
-
-      setUser(data.user);
-      setToken(data.token);
+      const { data } = await axiosConfig.post("/auth/login", values);
+      setUser(data.data.user);
+      setToken(data.data.token);
       setAuthenticated(true);
       setLoading(false);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
       navigate("/");
     } catch (error: any) {
       if (localStorage.getItem("token")) {
@@ -33,7 +43,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setUser(null);
       setToken(null);
       setAuthenticated(false);
-      setError({ message: error.data.message });
+      setError({ message: error.response.data.message });
     }
   };
 
@@ -59,7 +69,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
       }
-      console.log("Error. Motivo: Falla en la autenticación");
       navigate("/");
     }
   };
@@ -93,6 +102,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={loading}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ login, logout, getAuth, register }}>
+      {children}
+    </UserContext.Provider>
   );
 }
