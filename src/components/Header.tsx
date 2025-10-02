@@ -31,8 +31,10 @@ const Header = () => {
         </button>
       </header>
       <div
-        className={`!box-border absolute bg-[#007BFF] w-full left-0 top-[8%] border border-t-0 border-[#212529] shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-end ${
-          !isOpen ? "hidden" : "block"
+        className={`!box-border absolute bg-[#007BFF] w-full left-0 top-[8%] border border-t-0 border-[#212529] shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-end transform transition-all duration-300 ease-in-out ${
+          !isOpen
+            ? "opacity-0 -translate-y-5 pointer-events-none"
+            : "opacity-100 translate-y-0"
         }`}
       >
         <button
