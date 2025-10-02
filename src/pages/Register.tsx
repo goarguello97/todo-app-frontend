@@ -5,7 +5,7 @@ const Register = () => {
         <h2 className="h-auto text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold !my-2">
           Registrarse
         </h2>
-        <form className="flex-1 flex-col justify-center items-start md:items-center !text-sm sm:!text-base md:!text-lg">
+        <form className="flex-1 flex flex-col justify-start items-start md:items-center !text-sm sm:!text-base md:!text-lg">
           <label htmlFor="formControlName" className="font-medium">
             Nombre
           </label>
