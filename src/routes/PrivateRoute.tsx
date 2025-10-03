@@ -3,13 +3,15 @@ import { Navigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
-  const { authenticated, getAuth, loading } = useContext(UserContext);
+  const { authenticated, getAuth, setAuthenticated, loading } =
+    useContext(UserContext);
   const [flag, setFlag] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (token) {
-      getAuth();
+      // getAuth();
+      setAuthenticated(true);
     }
     setFlag(true);
   }, []);

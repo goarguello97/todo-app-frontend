@@ -3,6 +3,7 @@ import "./App.css";
 import { UserProvider } from "./context/userContext";
 import Home from "./pages/Home";
 import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 function App() {
   return (
@@ -17,8 +18,22 @@ function App() {
           }
         />
 
-        <Route path="/register" element={<Home />} />
-        <Route path="/login" element={<Home />} />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Home />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Home />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </UserProvider>
   );

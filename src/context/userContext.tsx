@@ -10,6 +10,7 @@ type UserContextType = {
   getAuth: () => Promise<void>;
   register: (values: any) => Promise<void>;
   authenticated: boolean;
+  setAuthenticated: (value: boolean) => void;
   loading: boolean;
 };
 
@@ -105,7 +106,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ login, logout, getAuth, register, authenticated, loading }}
+      value={{
+        login,
+        logout,
+        getAuth,
+        register,
+        authenticated,
+        setAuthenticated,
+        loading,
+      }}
     >
       {children}
     </UserContext.Provider>
