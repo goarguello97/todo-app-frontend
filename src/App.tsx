@@ -8,6 +8,8 @@ function App() {
     <UserProvider>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Home />} />
+        <Route path="/login" element={<Home />} />
       </Routes>
     </UserProvider>
   );
