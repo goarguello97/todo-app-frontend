@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { Link, useLocation } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
+  const { logout } = useContext(UserContext);
+
   return (
     <>
       <header className="row-span-1 w-full h-full p-4 bg-[#007BFF] border !border-[#212529] !border-b-[#212529] !rounded-lg !rounded-b-none shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-between">
@@ -23,12 +28,30 @@ const Header = () => {
           />
         )}
 
-        <button
-          type="submit"
-          className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden"
-        >
-          Iniciar Sesión
-        </button>
+        {pathname !== "/" && pathname !== "/login" && (
+          <Link to="/login">
+            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden">
+              Iniciar Sesión
+            </button>
+          </Link>
+        )}
+
+        {pathname !== "/" && pathname !== "/register" && (
+          <Link to="/register">
+            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden">
+              Registrarse
+            </button>
+          </Link>
+        )}
+
+        {pathname === "/" && (
+          <button
+            onClick={() => logout()}
+            className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden"
+          >
+            Cerrar Sesión
+          </button>
+        )}
       </header>
       <div
         className={`!box-border absolute bg-[#007BFF] w-full left-0 top-[8%] border border-t-0 border-[#212529] shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-end transform transition-all duration-300 ease-in-out ${
