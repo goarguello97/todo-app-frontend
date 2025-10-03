@@ -12,6 +12,7 @@ type UserContextType = {
   authenticated: boolean;
   setAuthenticated: (value: boolean) => void;
   loading: boolean;
+  user: any;
 };
 
 export const UserContext = createContext<UserContextType>(
@@ -114,6 +115,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         authenticated,
         setAuthenticated,
         loading,
+        user,
       }}
     >
       {children}

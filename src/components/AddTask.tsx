@@ -12,6 +12,7 @@ const AddTask = () => {
     createTask,
     validationTask
   );
+  console.log(errors)
 
   return (
     <div className="w-full xs:!px-2 sm:!px-8 md:!px-12">
