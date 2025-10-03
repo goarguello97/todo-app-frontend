@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import axiosConfig from "../config/axiosConfig";
 import { UserContext } from "./userContext";
 
@@ -7,6 +13,7 @@ type CreateValues = { task: string; userId: string };
 type TaskContextType = {
   createTask: (values: CreateValues) => Promise<void>;
   loading: boolean;
+  error: any[];
 };
 
 export const TaskContext = createContext<TaskContextType>(
@@ -18,6 +25,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
   const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (error.length != 0) {
+      setTimeout(() => {
+        setError([]);
+      }, 3000);
+    }
+  }, [error]);
 
   const createTask = async (values: any) => {
     try {
@@ -34,7 +49,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <TaskContext.Provider value={{ createTask, loading }}>
+    <TaskContext.Provider value={{ createTask, loading, error }}>
       {children}
     </TaskContext.Provider>
   );
