@@ -1,8 +1,18 @@
+import { useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
+import { TaskContext } from "../context/taskContext";
 
-const Task = ({ done }: { done: boolean }) => {
-  const title = "Aprender React con TailwindCSS";
+const Task = ({
+  done,
+  title,
+  id,
+}: {
+  done: boolean;
+  title: string;
+  id: string;
+}) => {
+  const { updateTask, deleteTask } = useContext(TaskContext);
   return (
     <div className="flex items-center justify-between w-full bg-white border border-gray-200 rounded !p-2">
       <div className="flex items-center gap-3">
@@ -20,6 +30,12 @@ const Task = ({ done }: { done: boolean }) => {
           <button
             className="p-1 text-green-600 hover:text-green-700 focus:outline-none"
             aria-label="Marcar como completa"
+            onClick={(e) => {
+              e.preventDefault();
+              if (confirm("¿Deseas marcar la tarea como completa?")) {
+                updateTask({ done: true, id });
+              }
+            }}
           >
             <FaCheck size={20} />
           </button>
@@ -28,6 +44,12 @@ const Task = ({ done }: { done: boolean }) => {
         <button
           className="p-1 text-red-600 hover:text-red-700 focus:outline-none"
           aria-label="Eliminar tarea"
+          onClick={(e) => {
+            e.preventDefault();
+            if (confirm("¿Deseas eliminar la tarea?")) {
+              deleteTask(id);
+            }
+          }}
         >
           <AiOutlineClose size={20} />
         </button>

@@ -16,6 +16,7 @@ const Register = () => {
   useEffect(() => {
     setTimeout(() => {}, 5000);
   }, []);
+
   return (
     <div className="xs:!px-2 sm:!px-8 md:!px-12 h-[100%] !mb-2 overflow-y-auto flex-1">
       <div className="h-full flex flex-col">

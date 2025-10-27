@@ -2,7 +2,7 @@ import { createContext, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../config/axiosConfig";
 
-type LoginValues = { email: string; password: string }; // tipa los valores de login
+type LoginValues = { email: string; password: string };
 
 type UserContextType = {
   login: (values: LoginValues) => Promise<void>;
@@ -12,7 +12,9 @@ type UserContextType = {
   authenticated: boolean;
   setAuthenticated: (value: boolean) => void;
   loading: boolean;
+  setLoading: (value: boolean) => void;
   user: any;
+  me: () => Promise<void>;
 };
 
 export const UserContext = createContext<UserContextType>(
@@ -48,6 +50,22 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setToken(null);
       setAuthenticated(false);
       setError({ message: error.response.data.message });
+    }
+  };
+
+  const me = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axiosConfig.get(`/auth/me`);
+      setUser(data.data.user);
+      setLoading(false);
+    } catch (error: any) {
+      setUser(null);
+      setToken(null);
+      setAuthenticated(false);
+      setLoading(false);
+      //setError({ message: error.response.data.message });
     }
   };
 
@@ -115,7 +133,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         authenticated,
         setAuthenticated,
         loading,
+        setLoading,
         user,
+        me,
       }}
     >
       {children}

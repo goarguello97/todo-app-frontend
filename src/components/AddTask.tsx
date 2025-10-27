@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { TASK_INITIAL_VALUE } from "../constants";
 import { TaskContext } from "../context/taskContext";
 import { validationTask } from "../helpers/validations";
 import useForm from "../hooks/useForm";
 
 const AddTask = () => {
-  const { createTask, error } = useContext(TaskContext);
+  const { createTask, tasks, error } = useContext(TaskContext);
 
   const { values, errors, handleChange, handleSubmit } = useForm(
     TASK_INITIAL_VALUE,
@@ -13,10 +13,14 @@ const AddTask = () => {
     validationTask
   );
 
+  useEffect(() => {return}, []);
+
   return (
     <div className="w-full xs:!px-2 sm:!px-8 md:!px-12">
       <form
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
         className="flex items-center gap-2 relative"
       >
         <input
