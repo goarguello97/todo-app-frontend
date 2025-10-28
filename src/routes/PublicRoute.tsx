@@ -3,16 +3,9 @@ import { Navigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 
 const PublicRoute = ({ children }: { children: ReactNode }) => {
-  const { authenticated, getAuth, setAuthenticated, loading } =
-    useContext(UserContext);
+  const { authenticated } = useContext(UserContext);
 
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (token) {
-      setAuthenticated(true);
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   if (authenticated) {
     return <Navigate to="/" replace />;

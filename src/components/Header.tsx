@@ -6,7 +6,7 @@ import { UserContext } from "../context/userContext";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
-  const { logout } = useContext(UserContext);
+  const { logout, user } = useContext(UserContext);
 
   return (
     <>
@@ -14,23 +14,67 @@ const Header = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
           ToDo App
         </h1>
-        {isOpen ? (
-          <AiOutlineClose
-            size={28}
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          />
-        ) : (
-          <AiOutlineMenu
-            size={28}
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          />
+
+        <div className="flex items-center">
+          {user && <span className="font-bold me-3!">{user.name}</span>}
+          {isOpen ? (
+            <AiOutlineClose
+              size={28}
+              className="md:hidden"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          ) : (
+            <AiOutlineMenu
+              size={28}
+              className="md:hidden"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          )}
+          {pathname !== "/" && pathname !== "/login" && (
+            <Link to="/login" className="md:block hidden">
+              <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2">
+                Iniciar Sesión
+              </button>
+            </Link>
+          )}
+
+          {pathname !== "/" && pathname !== "/register" && (
+            <Link to="/register" className="md:block hidden">
+              <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2">
+                Registrarse
+              </button>
+            </Link>
+          )}
+
+          {pathname === "/" && (
+            <button
+              onClick={() => logout()}
+              className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden"
+            >
+              Cerrar Sesión
+            </button>
+          )}
+        </div>
+      </header>
+      <div
+        className={`!box-border absolute bg-[#007BFF] w-full left-0 top-[8%] border border-t-0 border-[#212529] shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-end transform transition-all duration-300 ease-in-out  z-50 ${
+          !isOpen
+            ? "opacity-0 -translate-y-5 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
+        {pathname === "/" && (
+          <button
+            onClick={() => logout()}
+            className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2"
+          >
+            Cerrar Sesión
+          </button>
         )}
 
         {pathname !== "/" && pathname !== "/login" && (
           <Link to="/login">
-            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden">
+            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border-1 border-[#6C757D] hover:border-[#FFFFFF] !p-2 whitespace-nowrap !my-2">
               Iniciar Sesión
             </button>
           </Link>
@@ -38,34 +82,11 @@ const Header = () => {
 
         {pathname !== "/" && pathname !== "/register" && (
           <Link to="/register">
-            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden">
+            <button className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border-1 border-[#6C757D] hover:border-[#FFFFFF] !p-2 whitespace-nowrap !my-2">
               Registrarse
             </button>
           </Link>
         )}
-
-        {pathname === "/" && (
-          <button
-            onClick={() => logout()}
-            className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border border-[#6C757D] hover:border-[#FFFFFF] !text-sm sm:!text-base md:!text-lg !px-2 !py-1 sm:!px-3 sm:!py-2 whitespace-nowrap !my-2 md:block hidden"
-          >
-            Cerrar Sesión
-          </button>
-        )}
-      </header>
-      <div
-        className={`!box-border absolute bg-[#007BFF] w-full left-0 top-[8%] border border-t-0 border-[#212529] shadow-sm xs:!px-2 sm:!px-8 md:!px-12 flex items-center justify-end transform transition-all duration-300 ease-in-out ${
-          !isOpen
-            ? "opacity-0 -translate-y-5 pointer-events-none"
-            : "opacity-100 translate-y-0"
-        }`}
-      >
-        <button
-          type="submit"
-          className="rounded bg-[#FFFFFF] hover:bg-[#212529] hover:text-[#E9ECEF] text-[#495057] border-1 border-[#6C757D] hover:border-[#FFFFFF] !p-2 whitespace-nowrap !my-2"
-        >
-          Iniciar Sesión
-        </button>
       </div>
     </>
   );

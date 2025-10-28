@@ -5,7 +5,7 @@ import { validationLogin } from "../helpers/validations";
 import useForm from "../hooks/useForm";
 
 const Login = () => {
-  const { login } = useContext(UserContext);
+  const { login, error } = useContext(UserContext);
 
   const { values, errors, handleChange, handleSubmit } = useForm(
     LOGIN_INITIAL_VALUES,
@@ -62,8 +62,16 @@ const Login = () => {
           </button>
 
           {Object.keys(errors).length != 0
-            ? Object.values(errors).map((error, i) => <p key={i}>a</p>)
+            ? Object.values(errors).map((error, i) => (
+                <label className="text-red-600" key={i}>
+                  {String(error)}
+                </label>
+              ))
             : null}
+
+            {error.message && (
+            <label className="text-red-600">{error.message}</label>
+          )}
         </form>
       </div>
     </div>

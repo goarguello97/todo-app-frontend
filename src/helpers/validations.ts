@@ -3,10 +3,10 @@ export const validationRegister = (values: any) => {
 
   if (!values.name) {
     errors.name = "El nombre es requerido.";
-  } else if (values.name.length < 2) {
+  } else if (values.name.length < 3) {
     errors.name = "El nombre debe tener mínimo 3 caracteres.";
-  } else if (values.name.length > 25) {
-    errors.name = "El nombre no puede tener más de 25 caracteres.";
+  } else if (values.name.length > 30) {
+    errors.name = "El nombre no puede tener más de 30 caracteres.";
   }
 
   if (!values.email) {

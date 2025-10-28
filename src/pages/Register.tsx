@@ -5,7 +5,7 @@ import { validationRegister } from "../helpers/validations";
 import useForm from "../hooks/useForm";
 
 const Register = () => {
-  const { register } = useContext(UserContext);
+  const { register, successRegister } = useContext(UserContext);
 
   const { values, errors, handleChange, handleSubmit } = useForm(
     REGISTER_INITIAL_VALUES,
@@ -40,6 +40,8 @@ const Register = () => {
             onChange={handleChange}
             required
             className="w-full md:w-[50%] rounded text-sm bg-[#E9ECEF] border border-[#212529] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#212529] !px-3 !py-2 !my-2"
+            min={3}
+            max={30}
           />
           <label htmlFor="formControlEmail" className="font-medium">
             Email
@@ -83,6 +85,16 @@ const Register = () => {
           >
             Registrarse
           </button>
+          {Object.keys(errors).length != 0
+            ? Object.values(errors).map((error, i) => (
+                <label className="text-red-600" key={i}>
+                  {String(error)}
+                </label>
+              ))
+            : null}
+          {successRegister.message && (
+            <label className="text-green-600">{successRegister.message}</label>
+          )}
         </form>
       </div>
     </div>

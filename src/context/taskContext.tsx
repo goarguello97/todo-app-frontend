@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -20,15 +21,19 @@ type TaskContextType = {
   error: any[];
 };
 
+interface ErrorMessage {
+  message: string;
+}
+
 export const TaskContext = createContext<TaskContextType>(
   {} as TaskContextType
 );
 
 export function TaskProvider({ children }: { children: ReactNode }) {
-  const [task, setTask] = useState({});
+  const [_, setTask] = useState({});
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState<ErrorMessage[]>([]);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -38,6 +43,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       }, 3000);
     }
   }, [error]);
+
+useMemo(() => ({ tasks, setTasks }), [tasks]);
 
   const createTask = async (values: any) => {
     try {
@@ -58,7 +65,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const updateTask = async (values: any) => {
     try {
       setLoading(true);
-      const { data } = await axiosConfig.put(`/tasks/${values.id}`, {
+      await axiosConfig.put(`/tasks/${values.id}`, {
         done: values.done,
         id: values.id,
       });
@@ -88,7 +95,11 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       setTasks(data.data);
       setLoading(false);
     } catch (error: any) {
-      setError(error.response.data.errors);
+      let errorMessage = "Ocurrio un error desconocido. Intente nuevamente.";
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      setError([{ message: errorMessage }]);
     }
   };
 

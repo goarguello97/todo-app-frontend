@@ -1,4 +1,10 @@
-import { createContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../config/axiosConfig";
 
@@ -11,6 +17,8 @@ type UserContextType = {
   register: (values: any) => Promise<void>;
   authenticated: boolean;
   setAuthenticated: (value: boolean) => void;
+  successRegister: { message?: string };
+  error: { message?: string };
   loading: boolean;
   setLoading: (value: boolean) => void;
   user: any;
@@ -24,11 +32,21 @@ export const UserContext = createContext<UserContextType>(
 export function UserProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [_, setToken] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [successRegister, setSuccessRegister] = useState({});
   const [error, setError] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Object.keys(error).length != 0) {
+      setTimeout(() => {
+        setError([]);
+      }, 3000);
+    }
+  }, [error]);
+
+  useMemo(() => ({ user, setUser }), [user]);
 
   const login = async (values: any) => {
     try {
@@ -45,11 +63,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
       }
-
       setUser(null);
       setToken(null);
       setAuthenticated(false);
       setError({ message: error.response.data.message });
+      setTimeout(() => {
+        setError({});
+      }, 5000);
     }
   };
 
@@ -59,13 +79,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
       const { data } = await axiosConfig.get(`/auth/me`);
       setUser(data.data.user);
+      setAuthenticated(true);
       setLoading(false);
     } catch (error: any) {
       setUser(null);
       setToken(null);
       setAuthenticated(false);
       setLoading(false);
-      //setError({ message: error.response.data.message });
+      setError({ message: error.response.data.message });
     }
   };
 
@@ -110,11 +131,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const { password2, ...data } = values;
     try {
       const response = await axiosConfig.post("/users", data);
-      if (data.status === 201) {
+      if (response.status === 201) {
         setSuccessRegister({
           message: response.data.message,
         });
         setTimeout(() => {
+          setSuccessRegister({});
           navigate("/");
         }, 5000);
       }
@@ -132,6 +154,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         register,
         authenticated,
         setAuthenticated,
+        successRegister,
+        error,
         loading,
         setLoading,
         user,

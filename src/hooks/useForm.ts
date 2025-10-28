@@ -13,7 +13,8 @@ const useForm = (
     if (submitting) {
       if (Object.keys(errors).length === 0) {
         submit(values);
-      }
+        setValues(initialValues);
+      } 
       setSubmitting(false);
 
       setTimeout(() => {
